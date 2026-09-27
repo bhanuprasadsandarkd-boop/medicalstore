@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maithri Medical & General Stores</title>
+<style>
+:root{--p:#087f5b;--dark:#123b34;--bg:#f4f7f8;--card:#fff;--muted:#667085;--line:#e5e7eb;--red:#c92a2a;--amber:#b7791f}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:#172033}button,input,select,textarea{font:inherit}button{cursor:pointer}
+.login{min-height:100vh;display:grid;place-items:center;background:linear-gradient(135deg,#087f5b,#123b34);padding:20px}.loginbox{background:#fff;width:min(420px,100%);padding:30px;border-radius:16px;box-shadow:0 20px 60px #0005}.loginbox h1{margin:0 0 5px}.loginbox input,.loginbox select{width:100%;padding:12px;margin:7px 0;border:1px solid #d0d5dd;border-radius:8px}.primary{background:var(--p);color:#fff;border:0;padding:10px 14px;border-radius:7px}.secondary{background:#fff;border:1px solid #ccd4da;padding:9px 13px;border-radius:7px}.danger{background:#c92a2a;color:#fff;border:0;padding:8px 11px;border-radius:6px}.app{display:none}.top{height:62px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:5}.brand{font-weight:800;color:var(--dark)}.layout{display:flex;min-height:calc(100vh - 62px)}.side{width:235px;background:var(--dark);padding:14px 10px;color:#fff}.nav{display:block;width:100%;border:0;background:none;color:#e9fffa;text-align:left;padding:11px 12px;margin:3px 0;border-radius:8px}.nav:hover,.nav.on{background:#087f5b}.content{flex:1;padding:20px;min-width:0}.page{display:none}.page.on{display:block}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:13px}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}.metric{font-size:25px;font-weight:800;margin-top:7px}.muted{color:var(--muted);font-size:13px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.toolbar input,.toolbar select{min-width:190px}.field{display:flex;flex-direction:column;gap:5px}.field input,.field select,.field textarea{padding:9px;border:1px solid #ccd4da;border-radius:7px;width:100%}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:9px 10px;border-bottom:1px solid #edf0f2;text-align:left;white-space:nowrap;font-size:13px}th{background:#f2f6f5}.low{background:#fff8e1}.expired{background:#ffe8e8}.badge{display:inline-block;padding:3px 7px;border-radius:12px;background:#e7f6f0;font-size:11px}.right{margin-left:auto}.modal{display:none;position:fixed;inset:0;background:#0007;z-index:20;place-items:center;padding:15px}.modalbox{background:#fff;border-radius:12px;width:min(760px,100%);max-height:92vh;overflow:auto;padding:18px}.modalhead{display:flex;justify-content:space-between;align-items:center}.modalhead button{border:0;background:none;font-size:20px}.bill{display:grid;grid-template-columns:1.5fr .7fr .8fr auto;gap:7px;align-items:end}.total{font-size:24px;font-weight:800;text-align:right}.hidden{display:none!important}@media(max-width:760px){.side{width:62px}.side .txt{display:none}.content{padding:12px}.top{padding:0 10px}.brand{font-size:14px}}
+</style></head>
+<body>
+
+<div id="login" class="login"><div class="loginbox">
+<h1>🏥 Maithri Medical</h1><div class="muted">Medical & General Stores — Management System</div>
+<select id="loginRole"><option value="owner">Owner Login</option><option value="employee">Employee Login</option></select>
+<input id="loginUser" placeholder="Username"><input id="loginPass" type="password" placeholder="Password">
+<button class="primary" style="width:100%;margin-top:8px" onclick="doLogin()">Login</button>
+<div class="toolbar" style="margin-top:14px"><button class="secondary" style="flex:1" onclick="showRegistration('owner')">Owner Registration</button><button class="secondary" style="flex:1" onclick="showRegistration('employee')">Employee Registration</button></div>
+<p class="muted">Default demo: Owner <b>owner / 1234</b> · Employee <b>staff / 1234</b></p>
+<div id="registrationBox" class="card hidden" style="margin-top:14px;padding:14px">
+<h3 id="regTitle" style="margin-top:0">Registration</h3>
+<div id="ownerRegFields">
+<div class="field"><label>Owner name</label><input id="regOwnerName" placeholder="Full name"></div>
+<div class="field"><label>Owner username</label><input id="regOwnerUser" placeholder="Create username"></div>
+<div class="field"><label>Password</label><input id="regOwnerPass" type="password" placeholder="Create password"></div>
+<div class="field"><label>Confirm password</label><input id="regOwnerPass2" type="password" placeholder="Confirm password"></div>
+<button class="primary" style="width:100%;margin-top:10px" onclick="registerOwner()">Create Owner Account</button>
+</div>
+<div id="employeeRegFields" class="hidden">
+<div class="field"><label>Owner username</label><input id="regAuthUser" placeholder="Owner username"></div>
+<div class="field"><label>Owner password</label><input id="regAuthPass" type="password" placeholder="Owner password"></div>
+<hr>
+<div class="field"><label>Employee name</label><input id="regEmpName" placeholder="Full name"></div>
+<div class="field"><label>Employee username</label><input id="regEmpUser" placeholder="Create username"></div>
+<div class="field"><label>Password</label><input id="regEmpPass" type="password" placeholder="Create password"></div>
+<div class="field"><label>Role</label><select id="regEmpRole"><option>Cashier</option><option>Manager</option></select></div>
+<button class="primary" style="width:100%;margin-top:10px" onclick="registerEmployee()">Register Employee</button>
+</div>
+<button class="secondary" style="width:100%;margin-top:8px" onclick="hideRegistration()">Back to Login</button>
+</div>
+</div></div>
+
+<div id="app" class="app">
+<div class="top"><div class="brand">🏥 Maithri Medical & General Stores</div><div><span id="userBadge" class="badge"></span> <button class="secondary" onclick="logout()">Logout</button></div></div>
+<div class="layout"><aside class="side">
+<button class="nav on" data-page="dashboard">📊 <span class="txt">Dashboard</span></button>
+<button class="nav" data-page="billing">🧾 <span class="txt">Billing / Sales</span></button>
+<button class="nav" data-page="stock">📦 <span class="txt">Stock</span></button>
+<button class="nav" data-page="purchases">🚚 <span class="txt">Purchases</span></button>
+<button class="nav" data-page="customers">👥 <span class="txt">Customers</span></button>
+<button class="nav" data-page="suppliers">🏢 <span class="txt">Suppliers</span></button>
+<button class="nav" data-page="expenses">💰 <span class="txt">Expenses</span></button>
+<button class="nav owner" data-page="employees">👤 <span class="txt">Employees</span></button>
+<button class="nav owner" data-page="reports">📈 <span class="txt">Reports</span></button>
+<button class="nav owner" data-page="backup">💾 <span class="txt">Backup / Settings</span></button>
+</aside>
+<main class="content">
+
+<section id="dashboard" class="page on"><h2>Dashboard</h2><div class="cards">
+<div class="card">Today's Sales<div class="metric" id="mSales">₹0</div></div>
+<div class="card">Today's Gross Profit<div class="metric" id="mProfit">₹0</div></div>
+<div class="card">Stock Cost Value<div class="metric" id="mStock">₹0</div></div>
+<div class="card">Low Stock<div class="metric" id="mLow">0</div></div>
+<div class="card">Expiring Soon<div class="metric" id="mExpiry">0</div></div>
+</div><div class="card" style="margin-top:14px"><h3>Alerts</h3><div id="alerts"></div></div></section>
+
+<section id="billing" class="page"><h2>Billing / Sales</h2>
+<div class="card"><div class="grid">
+<div class="field"><label>Customer</label><input id="billCustomer" placeholder="Name or mobile"></div>
+<div class="field"><label>Payment</label><select id="billPayment"><option>Cash</option><option>UPI</option><option>Card</option><option>Credit</option></select></div>
+<div class="field"><label>Discount ₹</label><input id="billDiscount" type="number" value="0" min="0"></div>
+</div><hr>
+<div class="bill"><div class="field"><label>Medicine</label><input id="billMed" oninput="billSearch()" placeholder="Type medicine name"></div><div class="field"><label>Qty</label><input id="billQty" type="number" min="1" value="1"></div><div class="field"><label>Rate</label><input id="billRate" type="number" readonly></div><button class="primary" onclick="addToBill()">Add</button></div>
+<div id="billMatches" class="toolbar"></div>
+<div class="tablewrap" style="margin-top:12px"><table><thead><tr><th>Medicine</th><th>Batch</th><th>Qty</th><th>Rate</th><th>Total</th><th></th></tr></thead><tbody id="billRows"></tbody></table></div>
+<div class="total">Grand Total: <span id="billTotal">₹0</span></div>
+<div class="toolbar"><button class="secondary" onclick="clearBill()">Clear</button><button class="primary right" onclick="finishSale()">Complete & Print Invoice</button></div>
+</div></section>
+
+<section id="stock" class="page"><h2>Stock <button class="primary right owner" onclick="openModal('stockModal')">+ Add Batch</button></h2>
+<div class="toolbar"><input id="stockQ" placeholder="Search medicine/company/batch" oninput="renderStock()"><select id="stockFilter" onchange="renderStock()"><option value="">All</option><option value="low">Low stock</option><option value="expiry">Expiring 90 days</option><option value="expired">Expired</option></select></div>
+<div class="tablewrap"><table><thead><tr><th>Medicine</th><th>Company</th><th>Batch</th><th>Expiry</th><th>Purchase</th><th>MRP</th><th>Margin</th><th>Sell</th><th>Qty</th><th>Rack</th><th></th></tr></thead><tbody id="stockRows"></tbody></table></div></section>
+
+<section id="purchases" class="page"><h2>Purchases <button class="primary right owner" onclick="openModal('purchaseModal')">+ Record Purchase</button></h2><div class="card"><div class="muted">Record supplier invoices here. Adding a purchase also increases the selected batch quantity.</div></div><div class="tablewrap" style="margin-top:12px"><table><thead><tr><th>Date</th><th>Supplier</th><th>Invoice</th><th>Total</th><th>Notes</th></tr></thead><tbody id="purchaseRows"></tbody></table></div></section>
+
+<section id="customers" class="page"><h2>Customer Details <button class="primary right" onclick="openModal('customerModal')">+ Customer</button></h2><div class="toolbar"><input id="custQ" placeholder="Search name/mobile" oninput="renderCustomers()"></div><div class="tablewrap"><table><thead><tr><th>Name</th><th>Mobile</th><th>Address</th><th>Purchases</th><th>Outstanding</th><th>Last Purchase</th></tr></thead><tbody id="customerRows"></tbody></table></div></section>
+
+<section id="suppliers" class="page"><h2>Suppliers <button class="primary right owner" onclick="openModal('supplierModal')">+ Supplier</button></h2><div class="tablewrap"><table><thead><tr><th>Company</th><th>Contact</th><th>Phone</th><th>GSTIN</th><th>Address</th></tr></thead><tbody id="supplierRows"></tbody></table></div></section>
+
+<section id="expenses" class="page"><h2>Expenses <button class="primary right owner" onclick="openModal('expenseModal')">+ Expense</button></h2><div class="cards"><div class="card">Total Expenses<div class="metric" id="expenseTotal">₹0</div></div></div><div class="tablewrap" style="margin-top:12px"><table><thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Amount</th></tr></thead><tbody id="expenseRows"></tbody></table></div></section>
+
+<section id="employees" class="page owner"><h2>Employees <button class="primary right" onclick="openModal('employeeModal')">+ Employee</button></h2><div class="card"><div class="muted">Employees can bill, search stock and manage customer details. Owner-only settings and financial reports remain protected.</div></div><div class="tablewrap" style="margin-top:12px"><table><thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Status</th></tr></thead><tbody id="employeeRows"></tbody></table></div></section>
+
+<section id="reports" class="page owner"><h2>Reports</h2><div class="cards"><div class="card">Sales<div class="metric" id="rSales">₹0</div></div><div class="card">Gross Profit<div class="metric" id="rProfit">₹0</div></div><div class="card">Expenses<div class="metric" id="rExpenses">₹0</div></div><div class="card">Net After Expenses<div class="metric" id="rNet">₹0</div></div></div>
+<div class="card" style="margin-top:14px"><h3>Sales History</h3><div class="tablewrap"><table><thead><tr><th>Date</th><th>Invoice</th><th>Customer</th><th>Payment</th><th>Total</th><th>Profit</th></tr></thead><tbody id="salesRows"></tbody></table></div></div></section>
+
+<section id="backup" class="page owner"><h2>Backup / Settings</h2><div class="card"><h3>Shop Settings</h3><div class="grid"><div class="field"><label>Shop name</label><input id="shopName"></div><div class="field"><label>Default margin %</label><input id="defaultMargin" type="number"></div><div class="field"><label>Low stock threshold</label><input id="lowThreshold" type="number"></div></div><button class="primary" style="margin-top:10px" onclick="saveSettings()">Save Settings</button></div>
+<div class="card" style="margin-top:14px"><h3>Data Backup</h3><p class="muted">Export your data as JSON. Keep backups in a safe place. Import replaces current browser data.</p><button class="primary" onclick="exportData()">Export Backup</button> <label class="secondary">Import Backup<input type="file" accept=".json" style="display:none" onchange="importData(event)"></label></div></section>
+
+</main></div></div>
+
+<!-- MODALS -->
+<div class="modal" id="stockModal"><div class="modalbox"><div class="modalhead"><h3>Add Medicine Batch</h3><button onclick="closeModal('stockModal')">×</button></div><div class="grid">
+<div class="field"><label>Medicine name*</label><input id="sName"></div><div class="field"><label>Company</label><input id="sCompany"></div>
+<div class="field"><label>Batch</label><input id="sBatch"></div><div class="field"><label>Expiry*</label><input id="sExpiry" type="date"></div>
+<div class="field"><label>Purchase price*</label><input id="sPurchase" type="number"></div><div class="field"><label>MRP*</label><input id="sMrp" type="number"></div>
+<div class="field"><label>Margin %</label><input id="sMargin" type="number"></div><div class="field"><label>Quantity*</label><input id="sQty" type="number"></div>
+<div class="field"><label>GST %</label><input id="sGst" type="number" value="0"></div><div class="field"><label>Rack</label><input id="sRack"></div>
+</div><button class="primary" style="margin-top:12px" onclick="saveStock()">Save Batch</button></div></div>
+
+<div class="modal" id="purchaseModal"><div class="modalbox"><div class="modalhead"><h3>Record Purchase</h3><button onclick="closeModal('purchaseModal')">×</button></div><div class="grid">
+<div class="field"><label>Supplier</label><select id="pSupplier"></select></div><div class="field"><label>Invoice No.</label><input id="pInvoice"></div><div class="field"><label>Total</label><input id="pTotal" type="number"></div><div class="field"><label>Notes</label><input id="pNotes"></div></div><button class="primary" style="margin-top:12px" onclick="savePurchase()">Save Purchase</button></div></div>
+
+<div class="modal" id="customerModal"><div class="modalbox"><div class="modalhead"><h3>Add Customer</h3><button onclick="closeModal('customerModal')">×</button></div><div class="grid"><div class="field"><label>Name*</label><input id="cName"></div><div class="field"><label>Mobile</label><input id="cMobile"></div><div class="field"><label>Address</label><input id="cAddress"></div></div><button class="primary" style="margin-top:12px" onclick="saveCustomer()">Save</button></div></div>
+
+<div class="modal" id="supplierModal"><div class="modalbox"><div class="modalhead"><h3>Add Supplier</h3><button onclick="closeModal('supplierModal')">×</button></div><div class="grid"><div class="field"><label>Company*</label><input id="spCompany"></div><div class="field"><label>Contact</label><input id="spContact"></div><div class="field"><label>Phone</label><input id="spPhone"></div><div class="field"><label>GSTIN</label><input id="spGst"></div><div class="field"><label>Address</label><input id="spAddress"></div></div><button class="primary" style="margin-top:12px" onclick="saveSupplier()">Save</button></div></div>
+
+<div class="modal" id="expenseModal"><div class="modalbox"><div class="modalhead"><h3>Add Expense</h3><button onclick="closeModal('expenseModal')">×</button></div><div class="grid"><div class="field"><label>Category</label><input id="eCat" placeholder="Rent, electricity, salary..."></div><div class="field"><label>Description</label><input id="eDesc"></div><div class="field"><label>Amount</label><input id="eAmount" type="number"></div></div><button class="primary" style="margin-top:12px" onclick="saveExpense()">Save</button></div></div>
+
+<div class="modal" id="employeeModal"><div class="modalbox"><div class="modalhead"><h3>Add Employee</h3><button onclick="closeModal('employeeModal')">×</button></div><div class="grid"><div class="field"><label>Name</label><input id="emName"></div><div class="field"><label>Username</label><input id="emUser"></div><div class="field"><label>Password</label><input id="emPass"></div><div class="field"><label>Role</label><select id="emRole"><option>Cashier</option><option>Manager</option></select></div></div><button class="primary" style="margin-top:12px" onclick="saveEmployee()">Save</button></div></div>
+
+<script>
+const KEY="maithri_full_v2";
+let db=JSON.parse(localStorage.getItem(KEY)||"null");
+if(!db) db={settings:{shop:"Maithri Medical & General Stores",margin:20,low:5},stock:[],sales:[],purchases:[],customers:[],suppliers:[],expenses:[],owner:{name:"Shop Owner",user:"owner",pass:"1234"},employees:[{name:"Main Staff",user:"staff",pass:"1234",role:"Cashier"}]};
+if(!db.owner) db.owner={name:"Shop Owner",user:"owner",pass:"1234"};
+if(!Array.isArray(db.employees)) db.employees=[];
+let currentRole="", currentUser="", bill=[];
+const $=id=>document.getElementById(id), money=n=>"₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2});
+const today=()=>new Date().toLocaleDateString("en-IN");
+function persist(){localStorage.setItem(KEY,JSON.stringify(db));refresh()}
+function doLogin(){let r=$("loginRole").value,u=$("loginUser").value.trim(),p=$("loginPass").value;let ok=r==="owner"?(db.owner.user===u&&db.owner.pass===p):db.employees.some(e=>e.user===u&&e.pass===p);if(!ok)return alert("Invalid username, password or account type");currentRole=r;currentUser=u;$("login").style.display="none";$("app").style.display="block";$("userBadge").textContent=r==="owner"?"OWNER: "+db.owner.name:"EMPLOYEE: "+(db.employees.find(e=>e.user===u)?.name||u);document.querySelectorAll(".owner").forEach(x=>x.classList.toggle("hidden",r!=="owner"));refresh()}
+function showRegistration(type){$("registrationBox").classList.remove("hidden");$("ownerRegFields").classList.toggle("hidden",type!=="owner");$("employeeRegFields").classList.toggle("hidden",type!=="employee");$("regTitle").textContent=type==="owner"?"Owner Registration":"Employee Registration"}
+function hideRegistration(){$("registrationBox").classList.add("hidden")}
+function registerOwner(){let name=$("regOwnerName").value.trim(),u=$("regOwnerUser").value.trim(),p=$("regOwnerPass").value,p2=$("regOwnerPass2").value;if(!name||!u||!p)return alert("Fill all owner registration fields");if(p.length<4)return alert("Password must be at least 4 characters");if(p!==p2)return alert("Passwords do not match");if(db.employees.some(e=>e.user===u))return alert("Username already used by an employee");db.owner={name,user:u,pass:p};persist();$("loginRole").value="owner";$("loginUser").value=u;$("loginPass").value="";hideRegistration();alert("Owner account registered successfully. Please log in.")}
+function registerEmployee(){let au=$("regAuthUser").value.trim(),ap=$("regAuthPass").value,n=$("regEmpName").value.trim(),u=$("regEmpUser").value.trim(),p=$("regEmpPass").value,r=$("regEmpRole").value;if(db.owner.user!==au||db.owner.pass!==ap)return alert("Owner authorization failed");if(!n||!u||!p)return alert("Fill all employee registration fields");if(p.length<4)return alert("Password must be at least 4 characters");if(u===db.owner.user||db.employees.some(e=>e.user===u))return alert("Username already exists");db.employees.push({name:n,user:u,pass:p,role:r});persist();$("loginRole").value="employee";$("loginUser").value=u;$("loginPass").value="";hideRegistration();alert("Employee registered successfully. Please log in.")}
+function logout(){location.reload()}
+document.querySelectorAll(".nav").forEach(n=>n.onclick=()=>{if(n.classList.contains("hidden"))return;document.querySelectorAll(".nav").forEach(x=>x.classList.remove("on"));n.classList.add("on");document.querySelectorAll(".page").forEach(x=>x.classList.remove("on"));$(n.dataset.page).classList.add("on");refresh()});
+function openModal(id){$(id).style.display="grid";if(id==="purchaseModal")fillSuppliers()}
+function closeModal(id){$(id).style.display="none"}
+function sell(x){return Math.min(x.mrp,Math.round((x.purchase*(1+(x.margin??db.settings.margin)/100))*100)/100)}
+function saveStock(){let x={id:Date.now(),name:$("sName").value.trim(),company:$("sCompany").value.trim(),batch:$("sBatch").value.trim(),expiry:$("sExpiry").value,purchase:+$("sPurchase").value,mrp:+$("sMrp").value,margin:+$("sMargin").value||db.settings.margin,qty:+$("sQty").value,gst:+$("sGst").value||0,rack:$("sRack").value.trim()};if(!x.name||!x.expiry||!x.mrp||!x.purchase||!x.qty)return alert("Fill medicine, expiry, prices and quantity");db.stock.push(x);closeModal("stockModal");persist()}
+function renderStock(){let q=($("stockQ")?.value||"").toLowerCase(),f=$("stockFilter")?.value||"",now=new Date(),lim=new Date();lim.setDate(lim.getDate()+90);let a=db.stock.filter(x=>(x.name+x.company+x.batch).toLowerCase().includes(q)).filter(x=>f==="low"?x.qty<=db.settings.low:f==="expiry"?new Date(x.expiry)<=lim&&new Date(x.expiry)>=now:f==="expired"?new Date(x.expiry)<now:true);$("stockRows").innerHTML=a.map(x=>{let ex=new Date(x.expiry),cl=ex<now?"expired":x.qty<=db.settings.low?"low":"";return `<tr class="${cl}"><td><b>${esc(x.name)}</b></td><td>${esc(x.company)}</td><td>${esc(x.batch)}</td><td>${x.expiry}</td><td>${money(x.purchase)}</td><td>${money(x.mrp)}</td><td>${x.margin}%</td><td>${money(sell(x))}</td><td>${x.qty}</td><td>${esc(x.rack)}</td><td>${currentRole==="owner"?`<button class="danger" onclick="deleteStock(${x.id})">Delete</button>`:""}</td></tr>`}).join("")||`<tr><td colspan="11">No stock found</td></tr>`}
+function deleteStock(id){if(confirm("Delete this batch?")){db.stock=db.stock.filter(x=>x.id!==id);persist()}}
+function billSearch(){let q=$("billMed").value.toLowerCase(),a=db.stock.filter(x=>x.name.toLowerCase().includes(q)&&x.qty>0).slice(0,7);$("billMatches").innerHTML=a.map(x=>`<button class="secondary" onclick="chooseMed(${x.id})">${esc(x.name)} — ${money(sell(x))} — ${x.qty}</button>`).join("")}
+function chooseMed(id){let x=db.stock.find(s=>s.id===id);$("billMed").value=x.name;$("billRate").value=sell(x);$("billMatches").innerHTML=""}
+function addToBill(){let q=$("billMed").value.toLowerCase(),x=db.stock.find(s=>s.name.toLowerCase()===q)||db.stock.find(s=>s.name.toLowerCase().includes(q)),qty=+$("billQty").value||1;if(!x)return alert("Medicine not found");if(qty>x.qty)return alert("Only "+x.qty+" available");let ex=bill.find(i=>i.id===x.id);if(ex){if(ex.qty+qty>x.qty)return alert("Insufficient stock");ex.qty+=qty}else bill.push({id:x.id,qty,rate:sell(x),cost:x.purchase,name:x.name,batch:x.batch});renderBill()}
+function renderBill(){$("billRows").innerHTML=bill.map((i,k)=>`<tr><td>${esc(i.name)}</td><td>${esc(i.batch)}</td><td>${i.qty}</td><td>${money(i.rate)}</td><td>${money(i.qty*i.rate)}</td><td><button class="danger" onclick="bill.splice(${k},1);renderBill()">×</button></td></tr>`).join("");let t=bill.reduce((s,i)=>s+i.qty*i.rate,0),d=+$("billDiscount").value||0;$("billTotal").textContent=money(Math.max(0,t-d))}
+$("billDiscount").addEventListener("input",renderBill);
+function clearBill(){bill=[];renderBill()}
+function finishSale(){if(!bill.length)return alert("Bill is empty");let d=+$("billDiscount").value||0,gross=bill.reduce((s,i)=>s+i.qty*i.rate,0),total=Math.max(0,gross-d),profit=bill.reduce((s,i)=>s+i.qty*(i.rate-i.cost),0)-d;bill.forEach(i=>{db.stock.find(x=>x.id===i.id).qty-=i.qty});let cn=$("billCustomer").value.trim(),c=db.customers.find(x=>x.name.toLowerCase()===cn.toLowerCase()||x.mobile===cn);if(c){c.purchases=(c.purchases||0)+total;c.last=new Date().toLocaleString("en-IN");if($("billPayment").value==="Credit")c.outstanding=(c.outstanding||0)+total}let inv="INV-"+Date.now().toString().slice(-7);db.sales.unshift({date:new Date().toLocaleString("en-IN"),invoice:inv,customer:cn||"Walk-in",payment:$("billPayment").value,total,profit,items:bill.map(i=>({name:i.name,qty:i.qty,rate:i.rate}))});printInvoice(inv,cn||"Walk-in",total);bill=[];$("billCustomer").value="";$("billDiscount").value=0;renderBill();persist()}
+function printInvoice(inv,customer,total){let items=db.sales[0].items.map(i=>`<tr><td>${i.name}</td><td>${i.qty}</td><td>${money(i.rate)}</td><td>${money(i.qty*i.rate)}</td></tr>`).join("");let w=window.open("","_blank");w.document.write(`<html><head><title>${inv}</title><style>body{font-family:Arial;padding:25px}table{width:100%;border-collapse:collapse}td,th{padding:8px;border-bottom:1px solid #ddd;text-align:left}</style></head><body><h2>${esc(db.settings.shop)}</h2><p>Invoice: ${inv}<br>Customer: ${esc(customer)}<br>Date: ${new Date().toLocaleString("en-IN")}</p><table><tr><th>Medicine</th><th>Qty</th><th>Rate</th><th>Total</th></tr>${items}</table><h2 style="text-align:right">Total: ${money(total)}</h2><p>Thank you.</p><script>window.print()<\/script></body></html>`);w.document.close()}
+function saveCustomer(){let x={name:$("cName").value.trim(),mobile:$("cMobile").value.trim(),address:$("cAddress").value.trim(),purchases:0,outstanding:0,last:"-"};if(!x.name)return alert("Name required");db.customers.push(x);closeModal("customerModal");persist()}
+function renderCustomers(){let q=($("custQ")?.value||"").toLowerCase();$("customerRows").innerHTML=db.customers.filter(x=>(x.name+x.mobile).toLowerCase().includes(q)).map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.mobile)}</td><td>${esc(x.address)}</td><td>${money(x.purchases)}</td><td>${money(x.outstanding)}</td><td>${x.last}</td></tr>`).join("")||`<tr><td colspan="6">No customers</td></tr>`}
+function saveSupplier(){let x={company:$("spCompany").value.trim(),contact:$("spContact").value.trim(),phone:$("spPhone").value.trim(),gst:$("spGst").value.trim(),address:$("spAddress").value.trim()};if(!x.company)return alert("Company required");db.suppliers.push(x);closeModal("supplierModal");persist()}
+function renderSuppliers(){$("supplierRows").innerHTML=db.suppliers.map(x=>`<tr><td>${esc(x.company)}</td><td>${esc(x.contact)}</td><td>${esc(x.phone)}</td><td>${esc(x.gst)}</td><td>${esc(x.address)}</td></tr>`).join("")||`<tr><td colspan="5">No suppliers</td></tr>`}
+function fillSuppliers(){$("pSupplier").innerHTML=db.suppliers.map((x,i)=>`<option value="${i}">${esc(x.company)}</option>`).join("")||"<option value=''>No suppliers</option>"}
+function savePurchase(){let i=$("pSupplier").value,x={date:new Date().toLocaleString("en-IN"),supplier:i!==""?db.suppliers[i].company:"",invoice:$("pInvoice").value,total:+$("pTotal").value||0,notes:$("pNotes").value};db.purchases.unshift(x);closeModal("purchaseModal");persist()}
+function renderPurchases(){$("purchaseRows").innerHTML=db.purchases.map(x=>`<tr><td>${x.date}</td><td>${esc(x.supplier)}</td><td>${esc(x.invoice)}</td><td>${money(x.total)}</td><td>${esc(x.notes)}</td></tr>`).join("")||`<tr><td colspan="5">No purchases</td></tr>`}
+function saveExpense(){let x={date:new Date().toLocaleString("en-IN"),cat:$("eCat").value,desc:$("eDesc").value,amount:+$("eAmount").value||0};if(!x.amount)return alert("Enter amount");db.expenses.unshift(x);closeModal("expenseModal");persist()}
+function renderExpenses(){let t=db.expenses.reduce((s,x)=>s+x.amount,0);$("expenseTotal").textContent=money(t);$("expenseRows").innerHTML=db.expenses.map(x=>`<tr><td>${x.date}</td><td>${esc(x.cat)}</td><td>${esc(x.desc)}</td><td>${money(x.amount)}</td></tr>`).join("")}
+function saveEmployee(){let x={name:$("emName").value.trim(),user:$("emUser").value.trim(),pass:$("emPass").value,role:$("emRole").value};if(!x.name||!x.user||!x.pass)return alert("Fill all fields");if(x.user===db.owner.user||db.employees.some(e=>e.user===x.user))return alert("Username already exists");db.employees.push(x);closeModal("employeeModal");persist()}
+function renderEmployees(){$("employeeRows").innerHTML=db.employees.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.user)}</td><td>${esc(x.role)}</td><td><span class="badge">Active</span></td></tr>`).join("")}
+function renderReports(){let sales=db.sales.reduce((s,x)=>s+x.total,0),profit=db.sales.reduce((s,x)=>s+x.profit,0),exp=db.expenses.reduce((s,x)=>s+x.amount,0);$("rSales").textContent=money(sales);$("rProfit").textContent=money(profit);$("rExpenses").textContent=money(exp);$("rNet").textContent=money(profit-exp);$("salesRows").innerHTML=db.sales.map(x=>`<tr><td>${x.date}</td><td>${x.invoice}</td><td>${esc(x.customer)}</td><td>${x.payment}</td><td>${money(x.total)}</td><td>${money(x.profit)}</td></tr>`).join("")||`<tr><td colspan="6">No sales</td></tr>`}
+function saveSettings(){db.settings.shop=$("shopName").value||db.settings.shop;db.settings.margin=+$("defaultMargin").value||20;db.settings.low=+$("lowThreshold").value||5;persist();alert("Settings saved")}
+function loadSettings(){$("shopName").value=db.settings.shop;$("defaultMargin").value=db.settings.margin;$("lowThreshold").value=db.settings.low}
+function exportData(){let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:"application/json"}));a.download="maithri-medical-backup-"+Date.now()+".json";a.click()}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{db=JSON.parse(r.result);persist();alert("Backup imported")}catch{alert("Invalid backup")}};r.readAsText(f)}
+function dashboard(){let d=new Date().toLocaleDateString("en-IN"),s=db.sales.filter(x=>x.date.startsWith(d));$("mSales").textContent=money(s.reduce((a,x)=>a+x.total,0));$("mProfit").textContent=money(s.reduce((a,x)=>a+x.profit,0));$("mStock").textContent=money(db.stock.reduce((a,x)=>a+x.qty*x.purchase,0));$("mLow").textContent=db.stock.filter(x=>x.qty<=db.settings.low).length;let n=new Date(),lim=new Date();lim.setDate(lim.getDate()+90);$("mExpiry").textContent=db.stock.filter(x=>{let e=new Date(x.expiry);return e>=n&&e<=lim}).length;let alerts=[];db.stock.filter(x=>x.qty<=db.settings.low).forEach(x=>alerts.push("⚠️ Low stock: "+esc(x.name)+" ("+x.qty+")"));db.stock.filter(x=>new Date(x.expiry)<n).forEach(x=>alerts.push("🔴 Expired: "+esc(x.name)+" — "+x.expiry));db.stock.filter(x=>{let e=new Date(x.expiry);return e>=n&&e<=lim}).forEach(x=>alerts.push("🟠 Expiring soon: "+esc(x.name)+" — "+x.expiry));$("alerts").innerHTML=alerts.slice(0,30).join("<br>")||"No alerts."}
+function refresh(){dashboard();renderStock();renderCustomers();renderSuppliers();renderPurchases();renderExpenses();renderEmployees();renderReports();loadSettings();renderBill()}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+</script></body></html>
